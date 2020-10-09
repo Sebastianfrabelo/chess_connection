@@ -17,7 +17,7 @@ Esses são os problemas que eu to lembrando, talvez tenham mais:
   - falta implementar check e checkmate
   - falta implementar King Castling e Queen Castling ('o-o' e 'o-o-o')
   - no caso de duas peças poderem realizar o mesmo movimento, não é possivel escolher qual será movida. O algorítimo move a primeira que ele encontrar. Esse vai ser um problema
-para torres e peões (peões apenas no caso de captura). Bispos ficam sempre em cores diferentes e eu não tenho idéia so bre os cavalos. Rei e rainha são únicos entao não tem problema.
+para torres e peões (peões apenas no caso de captura). Bispos ficam sempre em cores diferentes e eu não tenho idéia sobre os cavalos. Rei e rainha são únicos então não tem problema.
   - falta implementar todo o sistema de redes.
   - peças capturadas simplesmente desaparecem (não é necessario mas acho que seria bom ter elas separadas em uma lista ou algo do tipo).
   - os peões não conseguem iniciar movendo 2 casas. 
