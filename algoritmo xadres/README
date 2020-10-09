@@ -23,4 +23,4 @@ para torres e peões (peões apenas no caso de captura). Bispos ficam sempre em 
   - os peões não conseguem iniciar movendo 2 casas. 
   - falta verificar se todas as peças se movem corretamente. Seria bom jogar um jogo completo para testar.
 
-Se o código estiver muito ruim de ler me avisa já que eu acho que não coloque muitos comentários
+Se o código estiver muito ruim de ler me avisa já que eu acho que não coloquei muitos comentários
