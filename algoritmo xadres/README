@@ -3,7 +3,7 @@ O algoritmo para mover as peças do xadres
 
 Ainda está incompleto, mas já da pra testar (coloque uma interface bem simples).
 Para mover as peças
-  -Jogador 0 é brancos e 1 é pretos, o jogo alterna se o movimeto ocorrer. Para um erro o jogadoe goga de novo.
+  -Jogador 0 é brancos e 1 é pretos, o jogo alterna se o movimeto ocorrer. Para um erro o jogadoe joga de novo.
   -o turno atual é impresso na tela, junto com o tabuleiro.
   -digitar string:
     -'p':peões, 'r':torre, 'b':bispo, 'n':cavalo, 'k':rei, 'q':rainha
