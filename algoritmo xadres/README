@@ -1,3 +1,15 @@
 O algoritmo para mover as peças do xadres
-Ainda não funciona
-Vou tentar terminar essa semana
+
+
+Ainda está incompleto, mas já da pra testar (coloque uma interface bem simples).
+Esses são os problemas que eu to lembrando, talvez tenham mais:
+
+  - falta implementar check e checkmate
+  - falta implementar KInga Castling e Queen Castling ('o-o' e 'o-o-o')
+  - no caso de duas peças poderem realizar o mesmo movimento, não é possivel escolher qual sera movida.
+  - falta implementar todo o sistema de redes
+  - peças capturadas simplesmente desaparecem (não é necessario mas acho que seria bom ter elas separadas em uma lista ou algo do tipo)
+  - os peões não conseguem iniciar pulando 2 casas. 
+  - falta verificar se todas as peças se movem corretamente (acho que ainda há problemas com os cavalos por exemplo). Seria bom jogar um jogo completo para testar.
+
+Se o código estiver muito ruim de ler me avisa já que eu acho que não coloque muitos comentários
