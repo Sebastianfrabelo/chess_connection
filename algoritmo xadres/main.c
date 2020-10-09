@@ -11,14 +11,21 @@ int main()
     peca tab[8][8];//tabuleiro, tab[a-f][1-8]
     int turno = 0;
 
- // inicializa tabuleiro
+ // inicializa tabuleiro normal e de ataques
     for(int i = 0; i < 8; i++){
         for(int j = 2; j<= 5 ; j++){
             tab[i][j].jog = -1;
             tab[i][j].tipo = 'z';// sem peca
         }
     }
-
+    
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8 ; j++){
+            tab_danger[i][j] = -1;//sem peca
+        }
+    }
+    
+    
     for(int i = 0; i<8;i++){
         tab[i][0].jog = 0;
         tab[i][0].tipo = pecas[i];
@@ -101,6 +108,7 @@ int main()
         system("cls");
         if (flag == 0) puts("\nErro, peca nao pode ser movida\n");
         else {
+            update_danger(tab,**tab_danger);
             turno = 1 - turno;
             flag = 0;
         }
