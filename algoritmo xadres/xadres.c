@@ -115,7 +115,7 @@ int movRainha(peca tab[][8], int new_x, int new_y, int turno) {
 int movRei(peca tab[][8], int new_x, int new_y, int turno) {
     for (int i = -1; i < 2; i++) {
         for (int j = -1; j < 2; j++) {
-            if (tab[new_x + i][new_y + j].jog == turno && tab[new_x + i][new_y + j].tipo == 'k') {
+            if ((tab[new_x + i][new_y + j].jog == turno && tab[new_x + i][new_y + j].tipo == 'k') && (tab_danger[new_x][new_y] == turno) || (tab_danger[new_x][new_y] == -1) ) {
                 moverPeca(tab, new_x + i, new_y + j, new_x, new_y);
                 return 1;
                 break;
@@ -168,4 +168,125 @@ void showGame(peca tab[][8]) {
     }
     puts("      A     B     C     D     E     F     G     H");
     puts("\n\n");
+}
+
+
+int update_danger(peca tab[][8],int *tab_danger_temp[][8]){
+    
+    int tab_danger[8][8];
+    
+    int tempi = 0;
+    int tempj = 0;
+    
+    for(int i = 0; i < 8; i++){
+        for(int j = 0; j < 8 ; j++){
+            tab_danger[i][j] = -1;
+        }
+    }
+    
+    for(int i = 0;i < 8;i++){
+        for(int j = 0;j < 8;j++){
+            
+            if(tab[i][j].tipo == 'p'){ //pawns attack
+                if(tab[i][j].jog == 0){
+                    if(i<7 && j<7){
+                        tab_danger[i+1][j+1] = tab[i][j].jog;
+                    }
+                    if(i<7 && j>0){
+                        tab_danger[i+1][j-1] = tab[i][j].jog;
+                    }
+                }else{
+                    if(i>0 && j<7){
+                         tab_danger[i-1][j+1] = tab[i][j].jog;
+                    }
+                    if(i>0 && j>0){
+                        tab_danger[i-1][j-1] = tab[i][j].jog; 
+                    }
+                }
+            }
+            
+            if(tab[i][j].tipo == 'r'){ //rooks attack
+                //check i axis +
+                for(tempi = 1;tempi + i < 8;tempi++){
+                    tab_danger[i+tempi][j] = tab[i][j].jog;
+                    if(tab[i+tempi][j].jog != -1){
+                        break;
+                    }
+                }
+                //check i axis -
+                for(tempi = -1;tempi + i > 0;tempi--){
+                    tab_danger[i+tempi][j] = tab[i][j].jog;
+                    if(tab[i+tempi][j].jog != -1){
+                        break;
+                    }
+                }
+                //check j axis +
+                for(tempj = 1;tempj + j < 8;tempj++){
+                    tab_danger[i][j+tempj] = tab[i][j].jog;
+                    if(tab[i][j+tempj].jog != -1){
+                        break;
+                    }
+                }
+                //check j axis -
+                for(tempj = -1;tempj + i > 0;tempi--){
+                    tab_danger[i][j+tempj] = tab[i][j].jog;
+                    if(tab[i][j+tempj].jog != -1){
+                        break;
+                    }
+                }
+            }
+            
+            if(tab[i][j].tipo == 'b'){ //bishops attack
+                //check i j axis + +
+                tempi = 1;
+                tempj = 1;
+                for(;tempi + i < 8 && tempj < 8  ;){
+                    tab_danger[i+tempi][j+tempj] = tab[i][j].jog;
+                    if(tab[i+tempi][j+tempj].jog != -1){
+                        break;
+                    }
+                    tempi++;
+                    tempj++;
+                }
+                
+                //check i j axis + -
+                tempi = 1;
+                tempj = -1;
+                for(;tempi + i < 8 && tempj > 0;){
+                    tab_danger[i+tempi][j+tempj] = tab[i][j].jog;
+                    if(tab[i+tempi][j+tempj].jog != -1){
+                        break;
+                    }
+                    tempi++;
+                    tempj--;
+                }
+                
+                //check i j axis - -
+                tempi = -1;
+                tempj = -1;
+                for(;tempi + i > 0 && tempj > 0;){
+                    tab_danger[i+tempi][j+tempj] = tab[i][j].jog;
+                    if(tab[i+tempi][j+tempj].jog != -1){
+                        break;
+                    }
+                    tempi--;
+                    tempj--;
+                }
+                
+                //check i j axis - +
+                tempi = -1;
+                tempj = 1;
+                for(;tempi + i > 0 && tempj < 8;){
+                    tab_danger[i+tempi][j+tempj] = tab[i][j].jog;
+                    if(tab[i+tempi][j+tempj].jog != -1){
+                        break;
+                    }
+                    tempi--;
+                    tempj++;
+                }
+            }
+        }
+    }
+    tab_danger_temp = *tab_danger;
+    return 0;
 }
