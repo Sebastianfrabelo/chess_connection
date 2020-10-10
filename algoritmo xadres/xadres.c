@@ -13,12 +13,11 @@ void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1) {
 
 
 int movCavalo(peca tab[][8], int new_x, int new_y, int turno) {
-    //procura por um cavalo
-    int cav[4] = { -2,-1,1,2 };
+    int cav[4] = { -2,-1,1,2 }; //posiçoes relativas a new_x e new_y 
     int x, y;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) { // |x - new_x| + |y - new_y| = 3
         x = new_x + cav[i];
-        y = new_y + 3 - abs(cav[i]);
+        y = new_y + 3 - abs(cav[i]); 
         if (x > 7 || x < 0) continue;
         if (y < 7 && y >= 0) {
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'n') {
@@ -37,19 +36,25 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno) {
     return 0;
 }
 
-// nao usar no main
+//movimento da torre , bispo e rainha. nao usar no main. 
+//divide o campo de busca em um "relógio" com o centro na nova posicao. 4 bracos de busca para torres e bispos, 8 para rainha
+//cada braco de busca inicia-se em uma posicao adjacente e checa ate o fim do tabuleiro, até encontrar um obstaculo ou até encontrar a peca desejada
+//se encontrar a peca desejada, a peca é movida e retorna 1. Caso contrario retorna 0
 int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo,int sq[], int size) { 
+    // sq é a sequancia para o "relógio"
+    // size = tamanho de sq
     int i, j, x, y, t;
     for (int k = 0; k < size; k++) {
         t = 1;
         x = i = sq[k];
         y = j = sq[(k + size/4) % size];
-        while (x < 8 && x > -1 && y < 8 && y > -1) {
-            if (tab[x][y].jog == turno && tab[x][y].tipo == tipo) {
+        while (x < 8 && x > -1 && y < 8 && y > -1) { //fora do tabuleiro
+            if (tab[x][y].jog == turno && tab[x][y].tipo == tipo) {// encontrou a peca
                 moverPeca(tab, x, y, new_x, new_y);
                 return 1;
             }
-            else if (tab[x][y].jog != -1) break;
+            else if (tab[x][y].jog != -1) break; //caminho bloqueado por outra peca
+            //proxima posiçao
             t++;
             x = new_x + (t * i);
             y = new_y + (t * j);
@@ -75,14 +80,14 @@ int movRainha(peca tab[][8], int new_x, int new_y, int turno) {
     int sq[] = {0,1,1,1,0,-1,-1,-1};
     return movRBQ(tab, new_x, new_y, turno, 'q', sq, 8);
 }
-
+//procura o rei nas casas adjacentes
 int movRei(peca tab[][8], int new_x, int new_y, int turno) {
     int x, y;
     for (int i = -1; i < 2; i++) {
         for (int j = -1; j < 2; j++) {
             x = new_x + i;
             y = new_y + j;
-            if (x == -1 || x == 8 || y == -1 || y == 8) break;
+            if (x == -1 || x == 8 || y == -1 || y == 8) break; //fora do tabuleiro
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'k') {
                 moverPeca(tab, x, y, new_x, new_y);
                 return 1;
@@ -93,7 +98,7 @@ int movRei(peca tab[][8], int new_x, int new_y, int turno) {
     return 0;
 }
 
-
+// procura o peão na posiçao anterior
 int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap) {
     int y = new_y + 2 * turno - 1;
     int x;
@@ -121,7 +126,7 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap) {
     }
     return 0;
 }
-
+//imprime jogo
 void showGame(peca tab[][8]) {
     char* line = "   -------------------------------------------------";
     puts(line);
