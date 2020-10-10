@@ -11,29 +11,6 @@ void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1) {
     tab[x0][y0].jog = -1;
 }
 
-int movTorre(peca tab[][8], int new_x, int new_y, int turno) {
-    // procura por uma torre na horizontal e vertical do local escolhido 
-    int sq[] = {1, 0, -1, 0};
-    int i, j, x, y, t;
-    for (int k = 0; k < 4; k++) {
-        t = 1;
-        x = i = sq[k];
-        y = j = sq[(k + 1) % 4];
-        while (x < 8 && x > -1 && y < 8 && y > -1) {
-            if (tab[x][y].jog == turno && tab[x][y].tipo == 'r') {
-                moverPeca(tab, x, y, new_x, new_y);
-                return 1;
-            }
-            else if (tab[x][y].jog != -1) break;
-            t++;
-            x = new_x + (t * i);
-            y = new_y + (t * j);
-        }
-    }
-    return 0;
-}
-
-
 
 int movCavalo(peca tab[][8], int new_x, int new_y, int turno) {
     //procura por um cavalo
@@ -60,38 +37,14 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno) {
     return 0;
 }
 
-int movBispo(peca tab[][8], int new_x, int new_y, int turno) {
-    // procura por um bispo nas diagonais do local escolhido 
-    int sq[] = { 1, 1, -1, -1 };
+int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo,int sq[], int size) {
     int i, j, x, y, t;
-    for (int k = 0; k < 4; k++) {
+    for (int k = 0; k < size; k++) {
         t = 1;
         x = i = sq[k];
-        y = j = sq[(k + 1) % 4];
+        y = j = sq[(k + size/4) % size];
         while (x < 8 && x > -1 && y < 8 && y > -1) {
-            if (tab[x][y].jog == turno && tab[x][y].tipo == 'b') {
-                moverPeca(tab, x, y, new_x, new_y);
-                return 1;
-            }
-            else if (tab[x][y].jog != -1) break;
-            t++;
-            x = new_x + (t * i);
-            y = new_y + (t * j);
-        }
-    }
-    return 0; 
-}
-
-int movRainha(peca tab[][8], int new_x, int new_y, int turno) {
-    // procura pela rainha nas diagonais, horizontal e vertical do local escolhido 
-    int sq[] = {0,1,1,1,0,-1,-1,-1};
-    int i, j, x, y, t;
-    for (int k = 0; k < 8; k++) {
-        t = 1;
-        x = i = sq[k];
-        y = j = sq[(k + 2) % 8];
-        while (x < 8 && x > -1 && y < 8 && y > -1) {
-            if (tab[x][y].jog == turno && tab[x][y].tipo == 'q') {
+            if (tab[x][y].jog == turno && tab[x][y].tipo == tipo) {
                 moverPeca(tab, x, y, new_x, new_y);
                 return 1;
             }
@@ -102,6 +55,24 @@ int movRainha(peca tab[][8], int new_x, int new_y, int turno) {
         }
     }
     return 0;
+}
+int movTorre(peca tab[][8], int new_x, int new_y, int turno) {
+    // procura por uma torre na horizontal e vertical do local escolhido 
+    int sq[] = {1, 0, -1, 0};
+    return movRBQ(tab, new_x, new_y, turno, 'r', sq, 4);
+}
+
+int movBispo(peca tab[][8], int new_x, int new_y, int turno) {
+    // procura por um bispo nas diagonais do local escolhido 
+    int sq[] = { 1, 1, -1, -1 };
+    return movRBQ(tab, new_x, new_y, turno, 'b', sq, 4);
+}
+
+
+int movRainha(peca tab[][8], int new_x, int new_y, int turno) {
+    // procura pela rainha nas diagonais, horizontal e vertical do local escolhido 
+    int sq[] = {0,1,1,1,0,-1,-1,-1};
+    return movRBQ(tab, new_x, new_y, turno, 'q', sq, 8);
 }
 
 int movRei(peca tab[][8], int new_x, int new_y, int turno) {
