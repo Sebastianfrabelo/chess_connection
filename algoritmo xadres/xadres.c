@@ -90,7 +90,6 @@ int movRei(peca tab[][8], int new_x, int new_y, int turno) {
         }
     }
     return 0;
-
 }
 
 
