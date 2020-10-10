@@ -37,7 +37,8 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno) {
     return 0;
 }
 
-int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo,int sq[], int size) {
+// nao usar no main
+int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo,int sq[], int size) { 
     int i, j, x, y, t;
     for (int k = 0; k < size; k++) {
         t = 1;
