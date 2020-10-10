@@ -19,14 +19,14 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno) {
         x = new_x + cav[i];
         y = new_y + 3 - abs(cav[i]); 
         if (x > 7 || x < 0) continue;
-        if (y < 7 && y >= 0) {
+        if (y < 8 && y >= 0) {
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'n') {
                 moverPeca(tab, x, y, new_x, new_y);
                 return 1;
             }
         }
         y = new_y - 3 + abs(cav[i]);
-        if (y < 7 && y >= 0) {
+        if (y < 8 && y >= 0) {
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'n') {
                 moverPeca(tab, x, y, new_x, new_y);
                 return 1;
