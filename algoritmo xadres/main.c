@@ -79,7 +79,7 @@ int main()
                 break;
 
             case 'r'://torre
-                flag = movTorre(tab, new_x, new_y, turno, 'r');
+                flag = movTorre(tab, new_x, new_y, turno);
                 break;
 
             case 'n'://cavalo
@@ -87,7 +87,7 @@ int main()
                 break;
 
             case 'b'://bispo
-                flag = movBispo(tab, new_x, new_y, turno, 'b');
+                flag = movBispo(tab, new_x, new_y, turno);
                 break;
 
             case 'k'://rei
