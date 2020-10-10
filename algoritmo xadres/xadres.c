@@ -109,7 +109,7 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap) {
         if (tab[x][y].jog == turno && tab[x][y].tipo == 'p') {
             moverPeca(tab, x, y, new_x, new_y);
             return 1;
-        }else if ((turno == 0 && new_y == 3) || (turno == 1 && new_y==5)) { // movimento inicial de 2
+        }else if ((turno == 0 && new_y == 3) || (turno == 1 && new_y==4)) { // movimento inicial de 2
             y = new_y + 2*(2 * turno - 1);
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'p') {
                 moverPeca(tab, x, y, new_x, new_y);
