@@ -41,7 +41,7 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno) {
 //cada braco de busca inicia-se em uma posicao adjacente e checa ate o fim do tabuleiro, até encontrar um obstaculo ou até encontrar a peca desejada
 //se encontrar a peca desejada, a peca é movida e retorna 1. Caso contrario retorna 0
 int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo,int sq[], int size) { 
-    // sq é a sequancia para o "relógio"
+    // sq é a sequancia para o "relógio", passa para o proximo "braco" 
     // size = tamanho de sq
     int i, j, x, y, t;
     for (int k = 0; k < size; k++) {
