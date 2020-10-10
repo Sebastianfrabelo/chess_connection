@@ -9,8 +9,8 @@ typedef struct {
 int tab_danger[8][8];//tabuleiro de ataques p/ xeques
 
 void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1);
-int movTorre(peca tab[][8], int new_x, int new_y, int turno, char p);
-int movBispo(peca tab[][8], int new_x, int new_y, int turno, char p);
+int movTorre(peca tab[][8], int new_x, int new_y, int turno);
+int movBispo(peca tab[][8], int new_x, int new_y, int turno);
 int movCavalo(peca tab[][8], int new_x, int new_y, int turno);
 int movRainha(peca tab[][8], int new_x, int new_y, int turno);
 int movRei(peca tab[][8], int new_x, int new_y, int turno);
