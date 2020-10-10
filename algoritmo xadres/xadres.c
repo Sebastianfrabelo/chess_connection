@@ -102,13 +102,21 @@ int movRei(peca tab[][8], int new_x, int new_y, int turno) {
 int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap) {
     int y = new_y + 2 * turno - 1;
     int x;
-    if (cap == 0) {
+    if (cap == 0) { // nao e captura
         x = new_x;
         if (tab[x][y].jog == turno && tab[x][y].tipo == 'p') {
             moverPeca(tab, x, y, new_x, new_y);
             return 1;
         }
-    }else{
+        else if ((turno == 0 && new_y == 3) || (turno == 1 && new_y==5)) { // movimento inicial de 2
+            y = new_y + 2*(2 * turno - 1);
+            if (tab[x][y].jog == turno && tab[x][y].tipo == 'p') {
+                moverPeca(tab, x, y, new_x, new_y);
+                return 1;
+            }
+        }
+    }
+    else{ // captura
         if (new_x < 7) {
             x = new_x + 1;
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'p') {
