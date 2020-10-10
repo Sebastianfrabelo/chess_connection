@@ -46,8 +46,10 @@ int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo,int sq[], i
     int i, j, x, y, t;
     for (int k = 0; k < size; k++) {
         t = 1;
-        x = i = sq[k];
-        y = j = sq[(k + size/4) % size];
+        i = sq[k];
+        x = new_x + i;
+        j = sq[(k + size / 4) % size];
+        y = new_y + j;
         while (x < 8 && x > -1 && y < 8 && y > -1) { //fora do tabuleiro
             if (tab[x][y].jog == turno && tab[x][y].tipo == tipo) {// encontrou a peca
                 moverPeca(tab, x, y, new_x, new_y);
