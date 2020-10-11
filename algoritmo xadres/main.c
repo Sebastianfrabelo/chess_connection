@@ -49,7 +49,7 @@ int main()
     while(checkmate == -1){
         printf("\n Jogador %d:\n",turno);
         //scanf("%s",comando);
-        fgets(comando,5,stdin);
+        fgets(comando,6,stdin);
 ;       if(comando[1]=='x'){
             new_x = (int)comando[2] - (int)'a';//a-h
             new_y = (int)comando[3] - (int)'1';//1-8
