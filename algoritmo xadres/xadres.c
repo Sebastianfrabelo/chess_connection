@@ -135,24 +135,48 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap) {
     }
     return 0;
 }
-//imprime jogo
+//imprime jogo (http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20)
 void showGame(peca tab[][8]) {
-    char* line = "   -------------------------------------------------";
+                                                                                                        
+//  http://patorjk.com/software/taag/#p=display&f=Doh&t=CHESS%0A                               
+puts(   "          CCCCCCCCCCCCCHHHHHHHHH     HHHHHHHHHEEEEEEEEEEEEEEEEEEEEEE   SSSSSSSSSSSSSSS    SSSSSSSSSSSSSSS             \n"
+        "       CCC::::::::::::CH:::::::H     H:::::::HE::::::::::::::::::::E SS:::::::::::::::S SS:::::::::::::::S            \n"
+        "     CC:::::::::::::::CH:::::::H     H:::::::HE::::::::::::::::::::ES:::::SSSSSS::::::SS:::::SSSSSS::::::S            \n"
+        "    C:::::CCCCCCCC::::CHH::::::H     H::::::HHEE::::::EEEEEEEEE::::ES:::::S     SSSSSSSS:::::S     SSSSSSS            \n"
+        "   C:::::C       CCCCCC  H:::::H     H:::::H    E:::::E       EEEEEES:::::S            S:::::S                        \n"
+        "  C:::::C                H:::::H     H:::::H    E:::::E             S:::::S            S:::::S                        \n"
+        "  C:::::C                H::::::HHHHH::::::H    E::::::EEEEEEEEEE    S::::SSSS          S::::SSSS                     \n"
+        "  C:::::C                H:::::::::::::::::H    E:::::::::::::::E     SS::::::SSSSS      SS::::::SSSSS                \n"
+        "  C:::::C                H:::::::::::::::::H    E:::::::::::::::E       SSS::::::::SS      SSS::::::::SS              \n"
+        "  C:::::C                H::::::HHHHH::::::H    E::::::EEEEEEEEEE          SSSSSS::::S        SSSSSS::::S             \n"
+        "  C:::::C                H:::::H     H:::::H    E:::::E                         S:::::S            S:::::S            \n"
+        "   C:::::C       CCCCCC  H:::::H     H:::::H    E:::::E       EEEEEE            S:::::S            S:::::S            \n"
+        "    C:::::CCCCCCCC::::CHH::::::H     H::::::HHEE::::::EEEEEEEE:::::ESSSSSSS     S:::::SSSSSSSS     S:::::S            \n"
+        "     CC:::::::::::::::CH:::::::H     H:::::::HE::::::::::::::::::::ES::::::SSSSSS:::::SS::::::SSSSSS:::::S            \n"
+        "       CCC::::::::::::CH:::::::H     H:::::::HE::::::::::::::::::::ES:::::::::::::::SS S:::::::::::::::SS             \n"
+        "          CCCCCCCCCCCCCHHHHHHHHH     HHHHHHHHHEEEEEEEEEEEEEEEEEEEEEE SSSSSSSSSSSSSSS    SSSSSSSSSSSSSSS               \n");    
+                                                                                                        
+    char* blankspace = "                          ";
+    char* line = "  -------------------------------------------------";
+    printf(blankspace);
     puts(line);
     for (int j = 7; j > -1; j--) {
-        printf(" %d ", j+1);
+        printf(blankspace);
+        printf("%d ", j + 1);
         for (int i = 0; i < 8; i++) {
             if (tab[i][j].tipo != 'z') {
-                printf("| %d %c ",tab[i][j].jog,tab[i][j].tipo + ('A' - 'a'));
+                printf("| %d %c ", tab[i][j].jog, tab[i][j].tipo + ('A' - 'a'));
             }
             else {
                 printf("|     ");
             }
         }
         puts("|");
+        printf(blankspace);
         puts(line);
     }
-    puts("      A     B     C     D     E     F     G     H");
+    printf(blankspace);
+    puts("     A     B     C     D     E     F     G     H");
     puts("\n\n");
 }
 
