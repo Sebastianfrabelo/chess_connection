@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 #include "xadres.h"
 
 void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1) {
