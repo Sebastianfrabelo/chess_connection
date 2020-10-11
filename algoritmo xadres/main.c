@@ -46,8 +46,8 @@ int main()
     int new_y = 0;
     int cap = 0;
     while(checkmate == -1){
-        printf("\n Jogador %d:\n",turno);
-        //scanf("%s",comando);
+        if (turno) puts("[1]Pretos: ");
+        else puts("[0]Brancos: ");
         fgets(comando,6,stdin);
         if(comando[1]=='x'){
             new_x = (int)comando[2] - (int)'a';//a-h
