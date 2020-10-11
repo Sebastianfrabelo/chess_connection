@@ -40,13 +40,15 @@ int main()
         tab[i][7].tipo = pecas[i];
     }
     showGame(tab);
-    int checkmate = -1;
-    int flag = 0;//flag = 1 : sucesso
-    int new_x = 0;
-    int new_y = 0;
-    int cap = 0;
+    int checkmate, flag, new_x, new_y, cap, move;
+    checkmate = flag = new_x = new_y = cap = 0;
+    move = 1;
     while(checkmate == -1){
-        if (turno) puts("[1]Pretos: ");
+        printf("%d - ", move);
+        if (turno) {
+            puts("[1]Pretos: ");
+            move++;
+        }
         else puts("[0]Brancos: ");
         fgets(comando,6,stdin);
         if(comando[1]=='x'){
@@ -104,9 +106,18 @@ int main()
                 puts("\nErro, comando desconhecido");
                 break;
         }
+        //checa se o rei foi capturado
+        checkmate = 1;
+        for (int i = 0; i < 8 && checkmate == 1; i++) {
+            for (int j = 0; j < 8 && checkmate == 1; j++) {
+                if (tab[i][j].jog == (1 - turno) && tab[i][j].tipo == 'k') checkmate = 0;
+            }
+        }
         system("cls");
         showGame(tab);
-        if (flag == 0) puts("\nErro, peca nao pode ser movida\n");
+        
+        if (checkmate) printf("\n\nParabéns!! Jogador %d é o vencedor!\n\n", turno);
+        else if (flag == 0) puts("\nErro, peca nao pode ser movida\n");
         else {
             update_danger(tab,**tab_danger);
             turno = 1 - turno;
