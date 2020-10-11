@@ -116,7 +116,7 @@ int main()
         system("cls");
         showGame(tab);
         
-        if (checkmate) printf("\n\nParabéns!! Jogador %d é o vencedor!\n\n", turno);
+         if (checkmate) printf("\n\nParabens!! Jogador %d venceu!\n\n", turno);
         else if (flag == 0) puts("\nErro, peca nao pode ser movida\n");
         else {
             update_danger(tab,**tab_danger);
