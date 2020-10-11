@@ -1,13 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-
 #include "xadres.h"
 
 int main()
 {
     char pecas[] = {'r','n','b','q','k','b','n','r'};
-    char comando[10];
+    char comando[6];
     peca tab[8][8];//tabuleiro, tab[a-f][1-8]
     int turno = 0;
 
@@ -70,9 +66,7 @@ int main()
                 continue;
             }
         }
-        else if (comando[1] == '-') {//o-o | o-o-o
-
-        }
+        
         //jogo procura se ha uma peca disponivel para ser movida e nao ha obstaculos
         switch(comando[0]){
             case 'p'://peao
@@ -99,9 +93,6 @@ int main()
                 flag = movRainha(tab, new_x, new_y, turno);
                 break;
 
-            case 'o':
-                //o-o e o-o-o sao trocas
-                break;
             default:
                 puts("\nErro, comando desconhecido");
                 break;
