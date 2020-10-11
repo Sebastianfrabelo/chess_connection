@@ -14,7 +14,7 @@ Para mover as peças
     
 Esses são os problemas que eu to lembrando, talvez tenham mais:
 
-  - falta implementar check e checkmate -> Revit ta fznd
+  - falta implementar check e checkmate -> Revit ta fznd (parcialmente completo)
   - falta implementar King Castling e Queen Castling ('o-o' e 'o-o-o') -- meio complicado, talvez na valha a pena
   - no caso de duas peças poderem realizar o mesmo movimento, não é possivel escolher qual será movida. O algorítimo move a primeira que ele encontrar. Esse vai ser um problema
 para torres, cavalos e peões (peões apenas no caso de captura). Bispos ficam sempre em cores diferentes. Rei e rainha são únicos então não tem problema.
