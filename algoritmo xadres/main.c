@@ -106,14 +106,13 @@ int main()
                 break;
         }
         system("cls");
+        showGame(tab);
         if (flag == 0) puts("\nErro, peca nao pode ser movida\n");
         else {
             update_danger(tab,**tab_danger);
             turno = 1 - turno;
             flag = 0;
         }
-        showGame(tab);
-       
     }
     return 0;
 }
