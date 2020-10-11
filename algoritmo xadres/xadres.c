@@ -135,25 +135,26 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap) {
 //imprime jogo (http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20)
 void showGame(peca tab[][8]) {
                                                                                                         
-    //  http://patorjk.com/software/taag/#p=display&f=Doh&t=CHESS%0A                               
-    puts(   "          CCCCCCCCCCCCCHHHHHHHHH     HHHHHHHHHEEEEEEEEEEEEEEEEEEEEEE   SSSSSSSSSSSSSSS    SSSSSSSSSSSSSSS             \n"
-            "       CCC::::::::::::CH:::::::H     H:::::::HE::::::::::::::::::::E SS:::::::::::::::S SS:::::::::::::::S            \n"
-            "     CC:::::::::::::::CH:::::::H     H:::::::HE::::::::::::::::::::ES:::::SSSSSS::::::SS:::::SSSSSS::::::S            \n"
-            "    C:::::CCCCCCCC::::CHH::::::H     H::::::HHEE::::::EEEEEEEEE::::ES:::::S     SSSSSSSS:::::S     SSSSSSS            \n"
-            "   C:::::C       CCCCCC  H:::::H     H:::::H    E:::::E       EEEEEES:::::S            S:::::S                        \n"
-            "  C:::::C                H:::::H     H:::::H    E:::::E             S:::::S            S:::::S                        \n"
-            "  C:::::C                H::::::HHHHH::::::H    E::::::EEEEEEEEEE    S::::SSSS          S::::SSSS                     \n"
-            "  C:::::C                H:::::::::::::::::H    E:::::::::::::::E     SS::::::SSSSS      SS::::::SSSSS                \n"
-            "  C:::::C                H:::::::::::::::::H    E:::::::::::::::E       SSS::::::::SS      SSS::::::::SS              \n"
-            "  C:::::C                H::::::HHHHH::::::H    E::::::EEEEEEEEEE          SSSSSS::::S        SSSSSS::::S             \n"
-            "  C:::::C                H:::::H     H:::::H    E:::::E                         S:::::S            S:::::S            \n"
-            "   C:::::C       CCCCCC  H:::::H     H:::::H    E:::::E       EEEEEE            S:::::S            S:::::S            \n"
-            "    C:::::CCCCCCCC::::CHH::::::H     H::::::HHEE::::::EEEEEEEE:::::ESSSSSSS     S:::::SSSSSSSS     S:::::S            \n"
-            "     CC:::::::::::::::CH:::::::H     H:::::::HE::::::::::::::::::::ES::::::SSSSSS:::::SS::::::SSSSSS:::::S            \n"
-            "       CCC::::::::::::CH:::::::H     H:::::::HE::::::::::::::::::::ES:::::::::::::::SS S:::::::::::::::SS             \n"
-            "          CCCCCCCCCCCCCHHHHHHHHH     HHHHHHHHHEEEEEEEEEEEEEEEEEEEEEE SSSSSSSSSSSSSSS    SSSSSSSSSSSSSSS               \n");    
+    //  http://patorjk.com/software/taag/#p=display&f=Doh&t=CHESS%0A   - moificado                            
+     puts(   " \n\n\n\n"
+            "               CCCCCCCCCCCCC    HHHHHHHHH     HHHHHHHHH    EEEEEEEEEEEEEEEEEEEEEE       SSSSSSSSSSSSSSS        SSSSSSSSSSSSSSS             \n"
+            "            CCC::::::::::::C    H:::::::H     H:::::::H    E::::::::::::::::::::E     SS:::::::::::::::S     SS:::::::::::::::S            \n"
+            "          CC:::::::::::::::C    H:::::::H     H:::::::H    E::::::::::::::::::::E    S:::::SSSSSS::::::S    S:::::SSSSSS::::::S            \n"
+            "         C:::::CCCCCCCC::::C    HH::::::H     H::::::HH    EE::::::EEEEEEEEE::::E    S:::::S     SSSSSSS    S:::::S     SSSSSSS            \n"
+            "        C:::::C       CCCCCC      H:::::H     H:::::H        E:::::E       EEEEEE    S:::::S                S:::::S                        \n"
+            "       C:::::C                    H:::::H     H:::::H        E:::::E                 S:::::S                S:::::S                        \n"
+            "       C:::::C                    H::::::HHHHH::::::H        E::::::EEEEEEEEEE        S::::SSSS              S::::SSSS                     \n"
+            "       C:::::C                    H:::::::::::::::::H        E:::::::::::::::E         SS::::::SSSSS          SS::::::SSSSS                \n"
+            "       C:::::C                    H:::::::::::::::::H        E:::::::::::::::E           SSS::::::::SS          SSS::::::::SS              \n"
+            "       C:::::C                    H::::::HHHHH::::::H        E::::::EEEEEEEEEE              SSSSSS::::S            SSSSSS::::S             \n"
+            "       C:::::C                    H:::::H     H:::::H        E:::::E                             S:::::S                S:::::S            \n"
+            "        C:::::C       CCCCCC      H:::::H     H:::::H        E:::::E       EEEEEE                S:::::S                S:::::S            \n"
+            "         C:::::CCCCCCCC::::C    HH::::::H     H::::::HH    EE::::::EEEEEEEE:::::E    SSSSSSS     S:::::S    SSSSSSS     S:::::S            \n"
+            "          CC:::::::::::::::C    H:::::::H     H:::::::H    E::::::::::::::::::::E    S::::::SSSSSS:::::S    S::::::SSSSSS:::::S            \n"
+            "            CCC::::::::::::C    H:::::::H     H:::::::H    E::::::::::::::::::::E    S:::::::::::::::SS     S:::::::::::::::SS             \n"
+            "               CCCCCCCCCCCCC    HHHHHHHHH     HHHHHHHHH    EEEEEEEEEEEEEEEEEEEEEE     SSSSSSSSSSSSSSS        SSSSSSSSSSSSSSS               \n\n\n");    
                                                                                                         
-    char* blankspace = "                          ";
+    char* blankspace = "                                           ";
     char* line = "  -------------------------------------------------";
     printf(blankspace);
     puts(line);
