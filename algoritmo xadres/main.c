@@ -45,12 +45,11 @@ int main()
     int new_x = 0;
     int new_y = 0;
     int cap = 0;
-    peca aux;
     while(checkmate == -1){
         printf("\n Jogador %d:\n",turno);
         //scanf("%s",comando);
         fgets(comando,6,stdin);
-;       if(comando[1]=='x'){
+        if(comando[1]=='x'){
             new_x = (int)comando[2] - (int)'a';//a-h
             new_y = (int)comando[3] - (int)'1';//1-8
             cap = 1;
