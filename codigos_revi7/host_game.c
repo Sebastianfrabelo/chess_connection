@@ -1,4 +1,5 @@
 #include "header.h"
+#include "xadrez.h"
 
 int host_game(int port)
 {

@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 #define DEFAULT_PORT 2000 //acima das portas reservadas pelo OS
-#define BUFFERSIZE 4096	  //tamanho max da mensagem
+#define BUFFERSIZE 4096   //tamanho max da mensagem
 #define MAX_CONNECTIONS 1 //nro de adversarios
 typedef struct sockaddr_in STRUCT_IN;
 typedef struct sockaddr SA;

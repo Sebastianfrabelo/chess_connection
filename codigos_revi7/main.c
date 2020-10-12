@@ -1,4 +1,5 @@
 #include "header.h"
+#include "xadrez.h"
 
 int main()
 {
