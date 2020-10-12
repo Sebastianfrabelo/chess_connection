@@ -11,6 +11,7 @@ void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1)
     tab[x0][y0].jog = -1;
 }
 
+
 //Movimento do cavalo
 int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2])
 {
@@ -19,7 +20,7 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][
     int x, y;                    //coordenadas no tabuleiro
 
     for (int i = 0; i < 4; i++)
-    {   // |x - new_x| + |y - new_y| = 3,
+    { // |x - new_x| + |y - new_y| = 3,
         //essa equacao utilizando os valores da string acima
         //da todas as possiveis posicoes do cavalo
         x = new_x + cav[i];
@@ -147,7 +148,7 @@ int movRei(peca tab[][8], int new_x, int new_y, int turno)
             y = new_y + j;
             if (x == -1 || x == 8 || y == -1 || y == 8)
                 break; //fora do tabuleiro
-            if (tab[x][y].jog == turno && tab[x][y].tipo == 'k')
+            if ((tab[x][y].jog == turno && tab[x][y].tipo == 'k') && (tab_danger[new_x][new_y] != !turno))
             {
                 moverPeca(tab, x, y, new_x, new_y);
                 return 1;

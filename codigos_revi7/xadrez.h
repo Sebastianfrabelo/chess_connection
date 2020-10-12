@@ -19,3 +19,5 @@ int movRei(peca tab[][8], int new_x, int new_y, int turno);
 int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap, int pieceState[2][2]);
 void showGame(peca tab[][8]);
 int update_danger(peca tab[][8], int tab_danger_temp[][8]);
+
+int main_game(char comando[6]);
