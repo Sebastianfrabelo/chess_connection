@@ -130,6 +130,7 @@ int main()
             case 2: //tratamento de ambiguidades
                 convHex(pieceState[0], ambig[0]); //converte posicao das pecas em hexadecimal para impressao
                 convHex(pieceState[1], ambig[1]);
+                validFlag = 0;
                 printf("\nAmbiguidade no movimento, escolha entre 1. %s e 2. %s (Digite 1 ou 2): \n", ambig[0], ambig[1]);
                 while(!validFlag){
                     fgets(comando, 2, stdin);
