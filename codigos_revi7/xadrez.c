@@ -1,3 +1,4 @@
+#include "header.h"
 #include "xadrez.h"
 
 //Movimento propriamente dito, simplesmente coloca a peca no local final de seu movimento
@@ -10,7 +11,6 @@ void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1)
     tab[x0][y0].tipo = 'z';
     tab[x0][y0].jog = -1;
 }
-
 
 //Movimento do cavalo
 int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2])
@@ -113,6 +113,7 @@ int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo, int sq[], 
         return 2;
         break;
     }
+    return 0;
 }
 
 int movTorre(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2])
@@ -137,7 +138,7 @@ int movRainha(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][
 }
 
 //procura o rei nas casas adjacentes
-int movRei(peca tab[][8], int new_x, int new_y, int turno)
+int movRei(peca tab[][8], int new_x, int new_y, int turno, int tab_danger[][8][2])
 {
     int x, y;
     for (int i = -1; i < 2; i++)
@@ -148,7 +149,7 @@ int movRei(peca tab[][8], int new_x, int new_y, int turno)
             y = new_y + j;
             if (x == -1 || x == 8 || y == -1 || y == 8)
                 break; //fora do tabuleiro
-            if ((tab[x][y].jog == turno && tab[x][y].tipo == 'k') && (tab_danger[new_x][new_y] != !turno))
+            if ((tab[x][y].jog == turno && tab[x][y].tipo == 'k') && (tab_danger[new_x][new_y][!turno] != 1))
             {
                 moverPeca(tab, x, y, new_x, new_y);
                 return 1;
@@ -222,10 +223,13 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap, int pieceSt
         return 2;
         break;
     }
+    return 0;
 }
 //imprime jogo (http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20)
-void showGame(peca tab[][8])
+void showGame(peca tab[][8], int NroJogador)
 {
+    update_danger(tab, tab_danger);
+    NroJogador = !NroJogador; //inverte pq eu troquei kkkkk
 
     //  http://patorjk.com/software/taag/#p=display&f=Doh&t=CHESS%0A   - moificado
     puts(" \n\n\n\n"
@@ -248,33 +252,55 @@ void showGame(peca tab[][8])
 
     char *blankspace = "                                           ";
     char *line = "  -------------------------------------------------";
-    printf(blankspace);
+    puts(blankspace);
     puts(line);
     for (int j = 7; j > -1; j--)
     {
         puts(blankspace);
-        printf("%d ", j + 1);
-        for (int i = 0; i < 8; i++)
+        if (NroJogador)
         {
-            if (tab[i][j].tipo != 'z')
+            printf("%d ", j + 1);
+            for (int i = 0; i < 8; i++)
             {
-                printf("| %d %c ", tab[i][j].jog, tab[i][j].tipo + ('A' - 'a'));
-            }
-            else
-            {
-                printf("|     ");
+                if (tab[i][j].tipo != 'z')
+                {
+                    printf("| %d %c ", tab[i][j].jog, tab[i][j].tipo + ('A' - 'a'));
+                }
+                else
+                {
+                    printf("|     ");
+                }
             }
         }
+        else
+        {
+            printf("%d ", 8 - j);
+            for (int i = 1; i < 9; i++)
+            {
+                if (tab[8 - i][7 - j].tipo != 'z')
+                {
+                    printf("| %d %c ", tab[8 - i][7 - j].jog, tab[8 - i][7 - j].tipo + ('A' - 'a'));
+                }
+                else
+                {
+                    printf("|     ");
+                }
+            }
+        }
+
         puts("|");
-        printf(blankspace);
+        puts(blankspace);
         puts(line);
     }
-    printf(blankspace);
-    puts("     A     B     C     D     E     F     G     H");
+    puts(blankspace);
+    if (NroJogador)
+        puts("     A     B     C     D     E     F     G     H");
+    else
+        puts("     H     G     F     E     D     C     B     A");
     puts("\n\n");
 }
 
-int update_danger(peca tab[][8], int tab_danger[][8])
+int update_danger(peca tab[][8], int tab_danger[][8][2])
 {
 
     int tempi = 0;
@@ -284,7 +310,8 @@ int update_danger(peca tab[][8], int tab_danger[][8])
     {
         for (int j = 0; j < 8; j++)
         {
-            tab_danger[i][j] = -1;
+            tab_danger[i][j][0] = -1;
+            tab_danger[i][j][1] = -1;
         }
     }
 
@@ -299,32 +326,32 @@ int update_danger(peca tab[][8], int tab_danger[][8])
                 {
                     if (i < 7 && j < 7)
                     {
-                        tab_danger[i + 1][j + 1] = tab[i][j].jog;
+                        tab_danger[i + 1][j + 1][0] = 1;
                     }
                     if (i < 7 && j > 0)
                     {
-                        tab_danger[i + 1][j - 1] = tab[i][j].jog;
+                        tab_danger[i + 1][j - 1][0] = 1;
                     }
                 }
                 else
                 {
                     if (i > 0 && j < 7)
                     {
-                        tab_danger[i - 1][j + 1] = tab[i][j].jog;
+                        tab_danger[i - 1][j + 1][1] = 1;
                     }
                     if (i > 0 && j > 0)
                     {
-                        tab_danger[i - 1][j - 1] = tab[i][j].jog;
+                        tab_danger[i - 1][j - 1][1] = 1;
                     }
                 }
             }
 
-            if (tab[i][j].tipo == 'r')
+            if (tab[i][j].tipo == 'r' || tab[i][j].tipo == 'q')
             { //rooks attack
                 //check i axis +
                 for (tempi = 1; tempi + i < 8; tempi++)
                 {
-                    tab_danger[i + tempi][j] = tab[i][j].jog;
+                    tab_danger[i + tempi][j][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j].jog != -1)
                     {
                         break;
@@ -333,7 +360,7 @@ int update_danger(peca tab[][8], int tab_danger[][8])
                 //check i axis -
                 for (tempi = -1; tempi + i > 0; tempi--)
                 {
-                    tab_danger[i + tempi][j] = tab[i][j].jog;
+                    tab_danger[i + tempi][j][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j].jog != -1)
                     {
                         break;
@@ -342,16 +369,16 @@ int update_danger(peca tab[][8], int tab_danger[][8])
                 //check j axis +
                 for (tempj = 1; tempj + j < 8; tempj++)
                 {
-                    tab_danger[i][j + tempj] = tab[i][j].jog;
+                    tab_danger[i][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i][j + tempj].jog != -1)
                     {
                         break;
                     }
                 }
                 //check j axis -
-                for (tempj = -1; tempj + i > 0; tempi--)
+                for (tempj = -1; tempj + j > 0; tempj--)
                 {
-                    tab_danger[i][j + tempj] = tab[i][j].jog;
+                    tab_danger[i][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i][j + tempj].jog != -1)
                     {
                         break;
@@ -359,14 +386,14 @@ int update_danger(peca tab[][8], int tab_danger[][8])
                 }
             }
 
-            if (tab[i][j].tipo == 'b')
+            if (tab[i][j].tipo == 'b' || tab[i][j].tipo == 'q')
             { //bishops attack
                 //check i j axis + +
                 tempi = 1;
                 tempj = 1;
-                for (; tempi + i < 8 && tempj < 8;)
+                for (; tempi + i < 8 && tempj + j < 8;)
                 {
-                    tab_danger[i + tempi][j + tempj] = tab[i][j].jog;
+                    tab_danger[i + tempi][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j + tempj].jog != -1)
                     {
                         break;
@@ -378,9 +405,9 @@ int update_danger(peca tab[][8], int tab_danger[][8])
                 //check i j axis + -
                 tempi = 1;
                 tempj = -1;
-                for (; tempi + i < 8 && tempj > 0;)
+                for (; tempi + i < 8 && tempj + j > 0;)
                 {
-                    tab_danger[i + tempi][j + tempj] = tab[i][j].jog;
+                    tab_danger[i + tempi][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j + tempj].jog != -1)
                     {
                         break;
@@ -392,9 +419,9 @@ int update_danger(peca tab[][8], int tab_danger[][8])
                 //check i j axis - -
                 tempi = -1;
                 tempj = -1;
-                for (; tempi + i > 0 && tempj > 0;)
+                for (; tempi + i > 0 && tempj + j > 0;)
                 {
-                    tab_danger[i + tempi][j + tempj] = tab[i][j].jog;
+                    tab_danger[i + tempi][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j + tempj].jog != -1)
                     {
                         break;
@@ -406,15 +433,49 @@ int update_danger(peca tab[][8], int tab_danger[][8])
                 //check i j axis - +
                 tempi = -1;
                 tempj = 1;
-                for (; tempi + i > 0 && tempj < 8;)
+                for (; tempi + i > 0 && tempj + j < 8;)
                 {
-                    tab_danger[i + tempi][j + tempj] = tab[i][j].jog;
+                    tab_danger[i + tempi][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j + tempj].jog != -1)
                     {
                         break;
                     }
                     tempi--;
                     tempj++;
+                }
+            }
+
+            if (tab[i][j].tipo == 'n')
+            { //knigts attack
+                if (i + 1 < 8 && j + 2 < 8)
+                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                if (i + 1 < 8 && j - 2 >= 0)
+                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                if (i - 1 >= 0 && j + 2 < 8)
+                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                if (i - 1 >= 0 && j - 2 >= 0)
+                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+
+                if (j + 1 < 8 && i + 2 < 8)
+                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                if (j + 1 < 8 && i - 2 >= 0)
+                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                if (j - 1 >= 0 && i + 2 < 8)
+                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                if (j - 1 >= 0 && i - 2 >= 0)
+                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+            }
+
+            if (tab[i][j].tipo == 'k')
+            {
+                //kings attack
+                for (int tempi = -1; tempi < 2; tempi++)
+                {
+                    for (int tempj = -1; tempj < 2; tempj++)
+                    {
+                        if ((i + tempi) >= 0 && (i + tempi) < 8 && (j + tempj >= 0) && (j + tempj) < 8)
+                            tab_danger[i + tempi][j + tempj][tab[i][j].jog] = 1;
+                    }
                 }
             }
         }

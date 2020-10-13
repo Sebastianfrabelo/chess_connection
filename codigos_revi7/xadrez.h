@@ -3,11 +3,25 @@
 
 typedef struct
 {
-    int jog; //0 = brancas | 1 =  pretas | -1 = sem peca
-    char tipo;
+    int jog;   //0 = brancas | 1 =  pretas | -1 = sem peca
+    char tipo; //qual peca eh
 } peca;
 
-int tab_danger[8][8]; //tabuleiro de ataques p/ xeques
+//char pecas[] = {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
+char ambig[2][4];        //guarda o codigo hexadecimal das casas aonde estao as pecas com ambiguidades
+int tab_danger[8][8][2]; //0 = branca ataca | 1 = preta ataca | -1 = ninguem ataca
+int pieceState[2][2];    //guarda estado da peca, utilizado em ambiguidades
+peca tab[8][8];          //tabuleiro, tab[a-f][1-8]
+/*int tab_danger[8][8]; //tabuleiro de ataques p/ xeques
+char pecas[] = {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
+//  char comando[6];    //comando dado pelo usuario
+char ambig[2][4]; //guarda o codigo hexadecimal das casas aonde estao as pecas com ambiguidades
+peca tab[8][8];   //tabuleiro, tab[a-f][1-8]
+int turno = 0;
+int pieceState[2][2]; //guarda estado da peca, utilizado em ambiguidades
+int checkmate = 0;
+int flag = 0;
+int move = 1;*/
 
 void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1);
 int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo, int sq[], int size, int pieceState[2][2]); // nao usar no main
@@ -15,9 +29,9 @@ int movTorre(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2
 int movBispo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2]);
 int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2]);
 int movRainha(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2]);
-int movRei(peca tab[][8], int new_x, int new_y, int turno);
+int movRei(peca tab[][8], int new_x, int new_y, int turno, int tab_danger[][8][2]);
 int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap, int pieceState[2][2]);
-void showGame(peca tab[][8]);
-int update_danger(peca tab[][8], int tab_danger_temp[][8]);
+void showGame(peca tab[][8], int nroJogador);
+int update_danger(peca tab[][8], int tab_danger[][8][2]);
 
-int main_game(char comando[6]);
+int main_game(char comando[6], peca tab[][8], int *turno, int *move, int nroJogador);

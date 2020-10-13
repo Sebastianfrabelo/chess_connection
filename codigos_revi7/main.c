@@ -3,8 +3,19 @@
 
 int main()
 {
-	int menu_select;
-	int port_select;
+	printf("ver. 1.4.2\n");
+	//int tab_danger[8][8]; //tabuleiro de ataques p/ xeques
+	char pecas[] = {'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'};
+	//  char comando[6];    //comando dado pelo usuario
+	//char ambig[2][4]; //guarda o codigo hexadecimal das casas aonde estao as pecas com ambiguidades
+	//peca tab[8][8]; //tabuleiro, tab[a-f][1-8]
+	//	int pieceState[2][2]; //guarda estado da peca, utilizado em ambiguidades
+	int checkmate = 0;
+	int flag = 0;
+	int turno = 0; //var pra saber quem esta jogando
+	int move = 1;
+
+	
 
 	while (1)
 	{
@@ -29,7 +40,7 @@ int main()
 				printf("Nro. Invalido\n");
 				break;
 			}
-			host_game(port_select);
+			host_game(port_select, &turno, &move,pecas);
 			break;
 
 		case 2:
@@ -41,7 +52,7 @@ int main()
 				printf("Nro. Invalido ou sala cheia!\n");
 				break;
 			}
-			join_game(port_select);
+			join_game(port_select, &turno, &move,pecas);
 			break;
 		}
 	}
