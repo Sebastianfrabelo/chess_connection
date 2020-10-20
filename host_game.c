@@ -8,6 +8,16 @@
 
 /*********************************************************************************************************************************************/
 
+/*
+Funcao int host_game(): Responsavel pela conexao do socket.
+Entrada:
+    int port: Porta a ser utilizada na conexao.
+    int *pturno: Qual jogador esta jogando agora?
+    int *pmove: Quantas rodadas se passaram ate agora?
+    char pecas[]: Array de pecas provindas da main.
+Saida:
+	Sempre 0.
+*/
 int host_game(int port, int *pturno, int *pmove, char pecas[])
 {
 	char continua;
@@ -15,7 +25,7 @@ int host_game(int port, int *pturno, int *pmove, char pecas[])
 	int server_socket, client_socket, size;
 	STRUCT_IN server_addr, client_addr;
 	verify((server_socket = socket(AF_INET, SOCK_STREAM, 0)),
-		   "Erro em criar socket!");
+		   "Erro em criar socket!"); //Funcao declarada na main.
 	//SOCK_STREAM,0 eh utilizado em conexoes tipo TCP, que garantem o envio do pacote em stream
 
 	server_addr.sin_family = AF_INET;
@@ -70,11 +80,18 @@ int host_game(int port, int *pturno, int *pmove, char pecas[])
 		client_socket = 0;
 		printf("Sala excluida!\n");
 		return 0;
-		}
 	}
-	return 0;
 }
 
+/*
+Funcao int conectado(): Responsavel pelo gerenciamento da conexao do jogo e interface com o usuario.
+Entrada:
+    int client_socket: socket do cliente.
+    int *pturno: Qual jogador esta jogando agora?
+    int *pmove: Quantas rodadas se passaram ate agora?
+Saida:
+	Sempre 0.
+*/
 int conectado(int client_socket, int *pturno, int *pmove)
 {
 

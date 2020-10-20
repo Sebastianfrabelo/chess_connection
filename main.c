@@ -1,6 +1,12 @@
 #include "header.h"
 #include "xadrez.h"
 
+/*********************************************************************************************************************************************/
+
+	//Arquivo main.c
+
+/*********************************************************************************************************************************************/
+
 int main()
 {
 	printf("ver. 1.4.2\n");
@@ -58,7 +64,7 @@ int main()
 	return 0;
 }
 
-//Funcao utilizada para simplificar verificacoes de erro
+//Funcao utilizada para simplificar verificacoes de erro relacionadas a socket. Utilizado nos arquivos host_game.c e join_game.c!
 int verify(int ret, const char *msg)
 {
 	if (ret == -1)

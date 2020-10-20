@@ -36,7 +36,7 @@ Entradas:
 	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
 	int new_x: Posicao horizontal aonde o usuario deseja posicionar o cavalo
 	int new_y: Posicao vertical aonde o usuario deseja posicionar o cavalo
-	int turno: Rodada aonde se encontra o jogo.
+	int turno: Rodada aonde o jogo se encontra (quem esta jogando?).
 	int pieceState[2][2]: Matriz para salvar a posicao do cavalo encontrado.
 Saida:
 	0 se o movimento for invalido e 1 se for valido.
@@ -96,7 +96,7 @@ Entradas:
 	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
 	int new_x: Posicao horizontal aonde o usuario deseja posicionar a peca.
 	int new_y: Posicao vertical aonde o usuario deseja posicionar a peca.
-	int turno: Rodada aonde se encontra o jogo.
+	int turno: Rodada aonde se encontra o jogo (quem esta jogando?).
 	char tipo: Tipo de peca que deseja se movimentar
 	int sq: Sequencia que eh passada para o relogio.
 	int size: Tamanho da sequencia.
@@ -176,7 +176,7 @@ Entradas:
 	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
 	int new_x: Posicao horizontal aonde o usuario deseja posicionar a peca.
 	int new_y: Posicao vertical aonde o usuario deseja posicionar a peca.
-	int turno: Rodada aonde se encontra o jogo.
+	int turno: Rodada aonde se encontra o jogo (quem esta jogando?).
 	int tab_danger[][8][2]: Tabuleiro de ataques, as posicoes preenchidas no tabuleiro sao inseguras.
 Saida:
 	0 se o movimento for invalido e 1 se for valido.
@@ -213,7 +213,7 @@ Entradas:
 	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
 	int new_x: Posicao horizontal aonde o usuario deseja posicionar o cavalo
 	int new_y: Posicao vertical aonde o usuario deseja posicionar o cavalo
-	int turno: Rodada aonde se encontra o jogo.
+	int turno: Rodada aonde se encontra o jogo (quem esta jogando?).
 	int cap: Valor booleano. Indica se o movimento eh de captura.
 	int pieceState[2][2]: Matriz para salvar a posicao da peca encontrada.
 Saida:

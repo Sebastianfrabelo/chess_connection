@@ -8,6 +8,16 @@
 
 /*********************************************************************************************************************************************/
 
+/*
+Funcao int join_game(): Responsavel pela conexao do socket, pelo gerenciamento da conexao do jogo e interface do usuario.
+Entrada:
+    int port: Porta a ser utilizada na conexao.
+    int *pturno: Qual jogador esta jogando agora?
+    int *pmove: Quantas rodadas se passaram ate agora?
+    char pecas[]: Array de pecas provindas da main.
+Saida:
+	Sempre 0.
+*/
 int join_game(int port, int *pturno, int *pmove, char pecas[])
 {
 	
@@ -17,7 +27,7 @@ int join_game(int port, int *pturno, int *pmove, char pecas[])
 	char resposta[6];
 	int result = 0;
 
-	verify(client_socket = socket(AF_INET, SOCK_STREAM, 0), "Erro ao criar o socket!\n");
+	verify(client_socket = socket(AF_INET, SOCK_STREAM, 0), "Erro ao criar o socket!\n"); //Funcao declarada na main.
 
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(DEFAULT_PORT + port);

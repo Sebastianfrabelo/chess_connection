@@ -1,6 +1,20 @@
 #include "header.h"
 #include "xadrez.h"
 
+/*********************************************************************************************************************************************/
+
+    //Arquivo main_game.c
+    //Arquivo principal do jogo de xadrez. Esse arquivo e xadrez.c sao responsaveis pelo jogo.
+
+/*********************************************************************************************************************************************/
+
+/*
+Funcao void convHex(): Recebe dois valores em inteiro e adiciona o valor 'A' a eles. Utilizado para impressao de posicoes no tabuleiro.
+Entrada:
+    int *value: array de valores inteiros.
+Saida:
+    char *hexvalue: array de valores em ascii.
+*/
 void convHex(int *value, char *hexvalue)
 {
     hexvalue[0] = 'A' + value[0];
@@ -8,16 +22,30 @@ void convHex(int *value, char *hexvalue)
     hexvalue[2] = 0;
 }
 
+/*********************************************************************************************************************************************/
+
+
+/*
+Funcao int main_game(): Gerencia o jogo de xadrez.
+Entradas:
+    char comando[6]: Comando recebido do usuario.
+    peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas).
+    int *pturno: Contem o endereco do valor do turno atual (quem esta jogando?).
+    int *pmove: Contem o endereco do valor de quantas rodadas se passaram ate agora.
+    int nroJogador: Numero do jogador.
+Saida:
+    char *hexvalue: array de valores em ascii.
+*/
 int main_game(char comando[6], peca tab[][8], int *pturno, int *pmove, int nroJogador)
 {
 
     int turno = *pturno;
     int move = *pmove;
-    int new_x = 0;
-    int new_y = 0;
-    int cap = 0;
+    int new_x = 0; //nova posicao horizontal da peca a ser movimentada.
+    int new_y = 0; //nova posicao vertical da peca a ser movimentada.
+    int cap = 0; //booleano. Movimento de captura?
     int validFlag = 0; //flag utilizada para validar comando do usuario no tratamento de ambiguidades
-    int checkmate = 0;
+    int checkmate = 0; //flag de checkmate
     int flag = 0;
     checkmate = 1;
 
