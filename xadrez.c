@@ -1,8 +1,23 @@
 #include "header.h"
 #include "xadrez.h"
 
-//Movimento propriamente dito, simplesmente coloca a peca no local final de seu movimento
-//e esvazia a casa aonde estava anteriormente.
+/*********************************************************************************************************************************************/
+
+	//Arquivo xadrez.c
+	//Funcoes relacionadas ao jogo de xadrez em si.
+
+/*********************************************************************************************************************************************/
+
+/*
+Funcao void moverPeca(): Movimento propriamente dito, simplesmente coloca a peca no local final de seu movimento
+	e esvazia a casa aonde estava anteriormente.
+Entradas:
+	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
+	int x0: Posicao horizontal da peca anterior ao movimento
+	int y0: Posicao vertical da peca anterior ao movimento
+	int x1: Posicao horizontal da peca posterior ao movimento
+	int y1: Posicao vertical da peca posterior ao movimento
+*/
 void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1)
 {
     tab[x1][y1].tipo = tab[x0][y0].tipo;
@@ -12,7 +27,20 @@ void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1)
     tab[x0][y0].jog = -1;
 }
 
-//Movimento do cavalo
+/*********************************************************************************************************************************************/
+
+/*
+Funcao int movCavalo(): Verifica um movimento atribuido ao cavalo. A partir da posicao que o usuario especificou, verifica se ha um cavalo que
+	pode se mover para ela.
+Entradas:
+	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
+	int new_x: Posicao horizontal aonde o usuario deseja posicionar o cavalo
+	int new_y: Posicao vertical aonde o usuario deseja posicionar o cavalo
+	int turno: Rodada aonde se encontra o jogo.
+	int pieceState[2][2]: Matriz para salvar a posicao do cavalo encontrado.
+Saida:
+	0 se o movimento for invalido e 1 se for valido.
+*/
 int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2])
 {
     int cav[4] = {-2, -1, 1, 2}; //posiçoes relativas a new_x e new_y
@@ -21,8 +49,8 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][
 
     for (int i = 0; i < 4; i++)
     { // |x - new_x| + |y - new_y| = 3,
-        //essa equacao utilizando os valores da string acima
-        //da todas as possiveis posicoes do cavalo
+        //essa equacao utilizando os valores do array cav[4] acima
+        //	da todas as possiveis posicoes do cavalo
         x = new_x + cav[i];
         y = new_y + 3 - abs(cav[i]);
         if (x > 7 || x < 0)
@@ -56,13 +84,29 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][
     return 0;
 }
 
-//movimento da torre , bispo e rainha. nao usar no main.
-//divide o campo de busca em um "relógio" com o centro na nova posicao. 4 bracos de busca para torres e bispos, 8 para rainha
-//cada braco de busca inicia-se em uma posicao adjacente e checa ate o fim do tabuleiro, até encontrar um obstaculo ou até encontrar a peca desejada
-//se encontrar a peca desejada, a peca é movida e retorna 1. se nao encontrar nenhuma peca, retorna 0
+/*********************************************************************************************************************************************/
+
+
+/*
+Funcao int movRBQ(): Verifica um movimento atribuido a uma torre (R), um bispo (B) ou rainha (Q). A partir da posicao que o usuario especificou, 
+	verifica se ha um(a) torre/bispo/rainha que pode se mover para ela. Divide o campo de busca em um "relogio" com o centro na nova posicao:
+	quatro bracos de busca para torres e bispos e oito para rainha. Cada braco de busca inicia-se em uma posicao adjacente e checa ate o fim do
+	tabuleiro, ate encontrar um obstaculo ou ate encontrar a peca desejada.
+Entradas:
+	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
+	int new_x: Posicao horizontal aonde o usuario deseja posicionar a peca.
+	int new_y: Posicao vertical aonde o usuario deseja posicionar a peca.
+	int turno: Rodada aonde se encontra o jogo.
+	char tipo: Tipo de peca que deseja se movimentar
+	int sq: Sequencia que eh passada para o relogio.
+	int size: Tamanho da sequencia.
+	int pieceState[2][2]: Matriz para salvar a posicao da peca encontrada.
+Saida:
+	0 se o movimento for invalido e 1 se for valido.
+*/
 int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo, int sq[], int size, int pieceState[2][2])
 {
-    // sq é a sequancia para o "relógio", passa para o proximo "braco"
+    // sq eh a sequencia para o "relogio", passa para o proximo "braco"
     // size = tamanho de sq
     int numFound = 0; //numero de pecas do tipo requerido encontradas: 0 = movimento invalido, 1 = movimento valido
     int i, j, x, y, t;
@@ -84,7 +128,7 @@ int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo, int sq[], 
             }
             else if (tab[x][y].jog != -1)
                 break; //caminho bloqueado por outra peca
-            //proxima posiçao
+            //proxima posicao
             t++;
             x = new_x + (t * i);
             y = new_y + (t * j);
@@ -97,6 +141,10 @@ int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo, int sq[], 
     }
     return 0;
 }
+
+/*********************************************************************************************************************************************/
+
+//As proximas funcoes sao intimamente ligadas com a ultima funcao movRBQ(), e simplesmente passarao para essa a sequencia da peca.
 
 int movTorre(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2])
 {
@@ -119,7 +167,20 @@ int movRainha(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][
     return movRBQ(tab, new_x, new_y, turno, 'q', sq, 8, pieceState);
 }
 
-//procura o rei nas casas adjacentes
+/*********************************************************************************************************************************************/
+
+/*
+Funcao int movRei(): Verifica um movimento atribuido ao rei. A partir da posicao que o usuario especificou, verifica se ha um rei que pode se 
+	mover para ela. Verifica as casas adjacentes e tambem verifica se a posicao que o usuario indicou colocara o rei em perigo.
+Entradas:
+	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
+	int new_x: Posicao horizontal aonde o usuario deseja posicionar a peca.
+	int new_y: Posicao vertical aonde o usuario deseja posicionar a peca.
+	int turno: Rodada aonde se encontra o jogo.
+	int tab_danger[][8][2]: Tabuleiro de ataques, as posicoes preenchidas no tabuleiro sao inseguras.
+Saida:
+	0 se o movimento for invalido e 1 se for valido.
+*/
 int movRei(peca tab[][8], int new_x, int new_y, int turno, int tab_danger[][8][2])
 {
     int x, y;
@@ -142,7 +203,22 @@ int movRei(peca tab[][8], int new_x, int new_y, int turno, int tab_danger[][8][2
     return 0;
 }
 
-// procura o peão na posiçao anterior
+/*********************************************************************************************************************************************/
+
+/*
+Funcao int movPeao(): Verifica um movimento atribuido a um peao. A partir da posicao que o usuario especificou, verifica se ha um peao que 
+	pode se mover para ela. Verifica as casas anteriores caso seja um movimento comum e as diagonais anteriores se for um movimento de captura.
+	Movimentos iniciais sao levado em consideracao.
+Entradas:
+	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
+	int new_x: Posicao horizontal aonde o usuario deseja posicionar o cavalo
+	int new_y: Posicao vertical aonde o usuario deseja posicionar o cavalo
+	int turno: Rodada aonde se encontra o jogo.
+	int cap: Valor booleano. Indica se o movimento eh de captura.
+	int pieceState[2][2]: Matriz para salvar a posicao da peca encontrada.
+Saida:
+	0 se o movimento for invalido e 1 se for valido.
+*/
 int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap, int pieceState[2][2])
 {
     int y = new_y + 2 * turno - 1;
@@ -200,13 +276,20 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap, int pieceSt
     return 0;
 }
 
-//imprime jogo (http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20)
+/*********************************************************************************************************************************************/
+
+/*
+Funcao void showGame(): Imprime o jogo na tela. Tipografia de http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
+Entradas:
+	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas)
+	int NroJogador: Valor booleano. Qual jogador esta jogando?
+*/
 void showGame(peca tab[][8], int NroJogador)
 {
     update_danger(tab, tab_danger);
-    NroJogador = !NroJogador; //inverte pq eu troquei kkkkk
+    NroJogador = !NroJogador;
 
-    //  http://patorjk.com/software/taag/#p=display&f=Doh&t=CHESS%0A   - moificado
+    //  http://patorjk.com/software/taag/#p=display&f=Doh&t=CHESS%0A   - modificado
     puts(" \n\n\n\n"
          "               CCCCCCCCCCCCC    HHHHHHHHH     HHHHHHHHH    EEEEEEEEEEEEEEEEEEEEEE       SSSSSSSSSSSSSSS        SSSSSSSSSSSSSSS             \n"
          "            CCC::::::::::::C    H:::::::H     H:::::::H    E::::::::::::::::::::E     SS:::::::::::::::S     SS:::::::::::::::S            \n"
@@ -275,6 +358,15 @@ void showGame(peca tab[][8], int NroJogador)
     puts("\n\n");
 }
 
+/*********************************************************************************************************************************************/
+
+/*
+Funcao int update_danger(): Atualiza o tabuleiro de ataque (posicoes na qual o rei nao pode se movimentar).
+Entradas:
+	peca tab[][8]: Matriz do Tabuleiro (localizacao das pecas).
+	int tab_danger[][8][2]: Tabuleiro de ataques, as posicoes preenchidas no tabuleiro sao inseguras.
+Saida: Sempre 0.
+*/
 int update_danger(peca tab[][8], int tab_danger[][8][2])
 {
 
@@ -296,7 +388,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
         {
 
             if (tab[i][j].tipo == 'p')
-            { //pawns attack
+            { //Ataque dos peoes
                 if (tab[i][j].jog == 0)
                 {
                     if (i > 0 && j < 7)
@@ -321,9 +413,10 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                 }
             }
 
+            //Ataque da rainha = ataque das torres + ataque dos bispos.
             if (tab[i][j].tipo == 'r' || tab[i][j].tipo == 'q')
-            { //rooks attack
-                //check i axis +
+            { //Ataque das torres
+                //Posicoes a direita da peca
                 for (tempi = 1; tempi + i < 8; tempi++)
                 {
                     tab_danger[i + tempi][j][tab[i][j].jog] = 1;
@@ -332,7 +425,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                         break;
                     }
                 }
-                //check i axis -
+                //Posicoes a esquerda da peca
                 for (tempi = -1; tempi + i > 0; tempi--)
                 {
                     tab_danger[i + tempi][j][tab[i][j].jog] = 1;
@@ -341,7 +434,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                         break;
                     }
                 }
-                //check j axis +
+                //Posicoes acima da peca
                 for (tempj = 1; tempj + j < 8; tempj++)
                 {
                     tab_danger[i][j + tempj][tab[i][j].jog] = 1;
@@ -350,7 +443,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                         break;
                     }
                 }
-                //check j axis -
+                //Posicoes embaixo da peca
                 for (tempj = -1; tempj + j > 0; tempj--)
                 {
                     tab_danger[i][j + tempj][tab[i][j].jog] = 1;
@@ -362,8 +455,8 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
             }
 
             if (tab[i][j].tipo == 'b' || tab[i][j].tipo == 'q')
-            { //bishops attack
-                //check i j axis + +
+            { //Ataque de bispos
+                //Posicoes diagonal direita superior.
                 tempi = 1;
                 tempj = 1;
                 for (; tempi + i < 8 && tempj + j < 8;)
@@ -377,7 +470,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                     tempj++;
                 }
 
-                //check i j axis + -
+                //Posicoes diagonal direita inferior
                 tempi = 1;
                 tempj = -1;
                 for (; tempi + i < 8 && tempj + j >= 0;)
@@ -391,7 +484,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                     tempj--;
                 }
 
-                //check i j axis - -
+                //Posicoes diagonal esquerda inferior
                 tempi = -1;
                 tempj = -1;
                 for (; tempi + i >= 0 && tempj + j >= 0;)
@@ -405,7 +498,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                     tempj--;
                 }
 
-                //check i j axis - +
+                //Posicoes diagonal esquerda superior
                 tempi = -1;
                 tempj = 1;
                 for (; tempi + i >= 0 && tempj + j < 8;)
@@ -421,7 +514,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
             }
 
             if (tab[i][j].tipo == 'n')
-            { //knigts attack
+            { //Ataque dos cavalos.
                 if (i + 1 < 8 && j + 2 < 8)
                     tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
                 if (i + 1 < 8 && j - 2 >= 0)
@@ -443,7 +536,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
 
             if (tab[i][j].tipo == 'k')
             {
-                //kings attack
+                //Ataque do rei.
                 for (int tempi = -1; tempi < 2; tempi++)
                 {
                     for (int tempj = -1; tempj < 2; tempj++)

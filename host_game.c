@@ -1,6 +1,13 @@
 #include "header.h"
 #include "xadrez.h"
 
+/*********************************************************************************************************************************************/
+
+	//Arquivo host_game.c
+	//Responsavel pela conexao do socket pela perspectiva do host (dono da sala).
+
+/*********************************************************************************************************************************************/
+
 int host_game(int port, int *pturno, int *pmove, char pecas[])
 {
 	char continua;
