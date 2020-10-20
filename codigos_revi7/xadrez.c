@@ -16,7 +16,7 @@ void moverPeca(peca tab[][8], int x0, int y0, int x1, int y1)
 int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][2])
 {
     int cav[4] = {-2, -1, 1, 2}; //posiçoes relativas a new_x e new_y
-    int numCav = 0;              //numero de cavalos encontrados: 0 = movimento invalido, 1 = movimento valido, 2 = ambiguidade
+    int achouCav = 0;            //numero de cavalos encontrados: 0 = movimento invalido, 1 = movimento valido
     int x, y;                    //coordenadas no tabuleiro
 
     for (int i = 0; i < 4; i++)
@@ -31,9 +31,9 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][
         {
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'n')
             { //cavalo encontrado
-                pieceState[numCav][0] = x;
-                pieceState[numCav][1] = y;
-                numCav++;
+                pieceState[0][0] = x;
+                pieceState[0][1] = y;
+                achouCav = 1;
             }
         }
         y = new_y - 3 + abs(cav[i]);
@@ -41,41 +41,32 @@ int movCavalo(peca tab[][8], int new_x, int new_y, int turno, int pieceState[2][
         {
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'n')
             { //cavalo encontrado
-                pieceState[numCav][0] = x;
-                pieceState[numCav][1] = y;
-                numCav++;
+                pieceState[0][0] = x;
+                pieceState[0][1] = y;
+                achouCav = 1;
             }
         }
     }
 
-    switch (numCav)
-    { //quantos cavalos foram encontrados?
-    case 0:
-        return 0;
-        break;
-    case 1:
-        moverPeca(tab, pieceState[0][0], pieceState[0][1], new_x, new_y); //se o movimento for valido simplesmente mova a peca
+    if (achouCav) //achou peca
+    {
+        moverPeca(tab, pieceState[0][0], pieceState[0][1], new_x, new_y);
         return 1;
-        break;
-    case 2:
-        return 2;
-        break;
     }
-
     return 0;
 }
 
 //movimento da torre , bispo e rainha. nao usar no main.
 //divide o campo de busca em um "relógio" com o centro na nova posicao. 4 bracos de busca para torres e bispos, 8 para rainha
 //cada braco de busca inicia-se em uma posicao adjacente e checa ate o fim do tabuleiro, até encontrar um obstaculo ou até encontrar a peca desejada
-//se encontrar a peca desejada, a peca é movida e retorna 1. se nao encontrar nenhuma peca, retorna 0, se houver ambiguidade retorna 2
+//se encontrar a peca desejada, a peca é movida e retorna 1. se nao encontrar nenhuma peca, retorna 0
 int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo, int sq[], int size, int pieceState[2][2])
 {
     // sq é a sequancia para o "relógio", passa para o proximo "braco"
     // size = tamanho de sq
-    int numFound = 0; //numero de pecas do tipo requerido encontradas: 0 = movimento invalido, 1 = movimento valido, 2 = ambiguidade
+    int numFound = 0; //numero de pecas do tipo requerido encontradas: 0 = movimento invalido, 1 = movimento valido
     int i, j, x, y, t;
-    for (int k = 0; k < size; k++)
+    for (int k = 0; k < size && numFound != 1; k++)
     {
         t = 1;
         i = sq[k];
@@ -86,10 +77,10 @@ int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo, int sq[], 
         { //fora do tabuleiro
             if (tab[x][y].jog == turno && tab[x][y].tipo == tipo)
             { // encontrou a peca
-                pieceState[numFound][0] = x;
-                pieceState[numFound][1] = y;
-                numFound++;
-                break; //Peca encontrada, se ha outras, elas estao bloqueadas.
+                pieceState[0][0] = x;
+                pieceState[0][1] = y;
+                numFound = 1;
+                break; //Peca encontrada
             }
             else if (tab[x][y].jog != -1)
                 break; //caminho bloqueado por outra peca
@@ -99,19 +90,10 @@ int movRBQ(peca tab[][8], int new_x, int new_y, int turno, char tipo, int sq[], 
             y = new_y + (t * j);
         }
     }
-
-    switch (numFound)
-    { //quantas pecas foram encontradas?
-    case 0:
-        return 0;
-        break;
-    case 1:
+    if (numFound) //achou peca
+    {
         moverPeca(tab, pieceState[0][0], pieceState[0][1], new_x, new_y);
         return 1;
-        break;
-    case 2:
-        return 2;
-        break;
     }
     return 0;
 }
@@ -148,8 +130,8 @@ int movRei(peca tab[][8], int new_x, int new_y, int turno, int tab_danger[][8][2
             x = new_x + i;
             y = new_y + j;
             if (x == -1 || x == 8 || y == -1 || y == 8)
-                break; //fora do tabuleiro
-            if ((tab[x][y].jog == turno && tab[x][y].tipo == 'k') && (tab_danger[new_x][new_y][!turno] != 1))
+                break;                                                                                                  //fora do tabuleiro
+            if ((tab[x][y].jog == turno && tab[x][y].tipo == 'k') && (tab_danger[new_x][new_y][!(tab[x][y].jog)] != 1)) //rei nao suicida
             {
                 moverPeca(tab, x, y, new_x, new_y);
                 return 1;
@@ -165,8 +147,8 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap, int pieceSt
 {
     int y = new_y + 2 * turno - 1;
     int x;
-    int pawnNum = 0; //numero de peoes encontrados (apenas captura!!)
-                     //0 = movimento invalido, 1 = movimento valido, 2 = ambiguidade
+    int achouPawn = 0; //numero de peoes encontrados (apenas captura!!)
+                       //0 = movimento invalido, 1 = movimento valido
 
     if (cap == 0)
     { // nao e captura
@@ -193,9 +175,9 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap, int pieceSt
             x = new_x + 1;
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'p')
             {
-                pieceState[pawnNum][0] = x;
-                pieceState[pawnNum][1] = y;
-                pawnNum++;
+                pieceState[0][0] = x;
+                pieceState[0][1] = y;
+                achouPawn = 1;
             }
         }
         if (new_x > 0)
@@ -203,28 +185,21 @@ int movPeao(peca tab[][8], int new_x, int new_y, int turno, int cap, int pieceSt
             x = new_x - 1;
             if (tab[x][y].jog == turno && tab[x][y].tipo == 'p')
             {
-                pieceState[pawnNum][0] = x;
-                pieceState[pawnNum][1] = y;
-                pawnNum++;
+                pieceState[0][0] = x;
+                pieceState[0][1] = y;
+                achouPawn = 1;
             }
         }
     }
 
-    switch (pawnNum)
-    { //quantos peoes foram encontrados?
-    case 0:
-        return 0;
-        break;
-    case 1:
+    if (achouPawn) //achou peca
+    {
         moverPeca(tab, pieceState[0][0], pieceState[0][1], new_x, new_y);
         return 1;
-        break;
-    case 2:
-        return 2;
-        break;
     }
     return 0;
 }
+
 //imprime jogo (http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20)
 void showGame(peca tab[][8], int NroJogador)
 {
@@ -268,7 +243,7 @@ void showGame(peca tab[][8], int NroJogador)
                 }
                 else
                 {
-                    printf("|     ");
+                    printf("|  %c%c ", tab_danger[i][j][0] == 1 ? '#' : ' ', tab_danger[i][j][1] == 1 ? '%' : ' ');
                 }
             }
         }
@@ -324,24 +299,24 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
             { //pawns attack
                 if (tab[i][j].jog == 0)
                 {
+                    if (i > 0 && j < 7)
+                    {
+                        tab_danger[i - 1][j + 1][0] = 1;
+                    }
                     if (i < 7 && j < 7)
                     {
                         tab_danger[i + 1][j + 1][0] = 1;
                     }
-                    if (i < 7 && j > 0)
-                    {
-                        tab_danger[i + 1][j - 1][0] = 1;
-                    }
                 }
                 else
                 {
-                    if (i > 0 && j < 7)
-                    {
-                        tab_danger[i - 1][j + 1][1] = 1;
-                    }
                     if (i > 0 && j > 0)
                     {
                         tab_danger[i - 1][j - 1][1] = 1;
+                    }
+                    if (i < 7 && j > 0)
+                    {
+                        tab_danger[i + 1][j - 1][1] = 1;
                     }
                 }
             }
@@ -405,7 +380,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                 //check i j axis + -
                 tempi = 1;
                 tempj = -1;
-                for (; tempi + i < 8 && tempj + j > 0;)
+                for (; tempi + i < 8 && tempj + j >= 0;)
                 {
                     tab_danger[i + tempi][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j + tempj].jog != -1)
@@ -419,7 +394,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                 //check i j axis - -
                 tempi = -1;
                 tempj = -1;
-                for (; tempi + i > 0 && tempj + j > 0;)
+                for (; tempi + i >= 0 && tempj + j >= 0;)
                 {
                     tab_danger[i + tempi][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j + tempj].jog != -1)
@@ -433,7 +408,7 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                 //check i j axis - +
                 tempi = -1;
                 tempj = 1;
-                for (; tempi + i > 0 && tempj + j < 8;)
+                for (; tempi + i >= 0 && tempj + j < 8;)
                 {
                     tab_danger[i + tempi][j + tempj][tab[i][j].jog] = 1;
                     if (tab[i + tempi][j + tempj].jog != -1)
@@ -450,20 +425,20 @@ int update_danger(peca tab[][8], int tab_danger[][8][2])
                 if (i + 1 < 8 && j + 2 < 8)
                     tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
                 if (i + 1 < 8 && j - 2 >= 0)
-                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                    tab_danger[i + 1][j - 2][tab[i][j].jog] = 1;
                 if (i - 1 >= 0 && j + 2 < 8)
-                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                    tab_danger[i - 1][j + 2][tab[i][j].jog] = 1;
                 if (i - 1 >= 0 && j - 2 >= 0)
-                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                    tab_danger[i - 1][j - 2][tab[i][j].jog] = 1;
 
                 if (j + 1 < 8 && i + 2 < 8)
-                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                    tab_danger[i + 2][j + 1][tab[i][j].jog] = 1;
                 if (j + 1 < 8 && i - 2 >= 0)
-                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                    tab_danger[i - 2][j + 1][tab[i][j].jog] = 1;
                 if (j - 1 >= 0 && i + 2 < 8)
-                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                    tab_danger[i + 2][j - 1][tab[i][j].jog] = 1;
                 if (j - 1 >= 0 && i - 2 >= 0)
-                    tab_danger[i + 1][j + 2][tab[i][j].jog] = 1;
+                    tab_danger[i - 2][j - 1][tab[i][j].jog] = 1;
             }
 
             if (tab[i][j].tipo == 'k')

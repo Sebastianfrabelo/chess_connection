@@ -3,6 +3,7 @@
 
 int join_game(int port, int *pturno, int *pmove, char pecas[])
 {
+	
 	int enviados;
 	char mensagem[6];
 	int recebidos;
@@ -16,17 +17,15 @@ int join_game(int port, int *pturno, int *pmove, char pecas[])
 	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
 	memset(&addr.sin_zero, 0, sizeof(addr.sin_zero));
-
 	printf("Tentando se conectar ao servidor...\n");
-
 	if (connect(client_socket, (struct sockaddr *)&addr, sizeof(addr)) == -1)
 	{
 		printf("Erro ao se conectar!\n");
 		return 1;
 	}
-
 	printf("Conectado!\n\n");
-	// inicializa tabuleiro normal e de ataques
+
+	// inicializa tabuleiro com -1
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 2; j <= 5; j++)
@@ -36,16 +35,7 @@ int join_game(int port, int *pturno, int *pmove, char pecas[])
 		}
 	}
 
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			tab_danger[i][j][0] = -1; //sem peca
-			tab_danger[i][j][1] = -1; //sem peca
-		}
-	}
-
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; i++) //inicializa o board em si
 	{
 		tab[i][0].jog = 0;
 		tab[i][0].tipo = pecas[i];
@@ -59,49 +49,52 @@ int join_game(int port, int *pturno, int *pmove, char pecas[])
 		tab[i][7].jog = 1;
 		tab[i][7].tipo = pecas[i];
 	}
+	update_danger(tab, tab_danger);
 	showGame(tab, 0);
 
 	do
 	{
-		while (1 && recebidos != -1)
+		while (recebidos != -1)
 		{
+			//ENVIA MOVIMENTO AO OPONENTE
 			printf("Envie seu movimento (ou exit para sair da sala): ");
 			fflush(stdin);
+			//memset(mensagem, '0', sizeof(mensagem));
 			scanf("%s", mensagem);
-			if (!strcmp(resposta, "exit") || !strcmp(mensagem, "exit"))
+			if (!strcmp(resposta, "exit") || !strcmp(mensagem, "exit")) //check "exit"
 			{
-				printf("Terminando conexao....\n");
-				enviados = send(client_socket, mensagem, strlen(mensagem), 0);
+				printf("Terminando conexao....\n");							   //termina conexao com "exit"
+				enviados = send(client_socket, mensagem, strlen(mensagem), 0); //manda "exit" pro oponente
 				close(client_socket);
 				printf("Conexao encerrada.\n");
 				recebidos = -1;
 				return 0;
 			}
-			result = main_game(mensagem, tab, pturno, pmove, 0);
-			if (result == 2)
+			result = main_game(mensagem, tab, pturno, pmove, 0); //faz movimento no board
+			if (result == 2)												 //fim de jogo
 			{
 				strcpy(mensagem, "exit");
 				enviados = -1;
 				break;
 			}
-			if (result)
+			if (result) //movimento valido
 			{
 				break;
 			}
 			else
 			{
-				printf("Comando incorreto, tente novamente...\n");
+				printf("Ttente novamente...\n");
 			}
 		}
 		enviados = send(client_socket, mensagem, strlen(mensagem), 0);
-		if (result == 2)
+		if (result == 2) //fim de jogo
 			break;
-		//	main_game(mensagem, tab, pturno, pmove,0);
+		showGame(tab, 0);
 
-		memset(resposta, '0', sizeof(resposta));
+		//ACEITA RESPOSTA DO OPONENTE
 		recebidos = recv(client_socket, resposta, 6, 0);
 		resposta[recebidos] = '\0';
-		if (!strcmp(resposta, "exit") || !strcmp(mensagem, "exit"))
+		if (!strcmp(resposta, "exit") || !strcmp(mensagem, "exit")) //testa exit
 		{
 			printf("Terminando conexao....\n");
 			close(client_socket);
@@ -109,15 +102,15 @@ int join_game(int port, int *pturno, int *pmove, char pecas[])
 			recebidos = -1;
 			return 0;
 		}
-		if (main_game(resposta, tab, pturno, pmove, 0) == 2)
-			break;
-
+		result = main_game(resposta, tab, pturno, pmove, 0);
 		printf("Jogada do adversario: %s\n", resposta);
-		//	main_game(resposta, tab, pturno, pmove, 0);
+		if (result == 2) //fim de jogo?
+			break;
+		showGame(tab, 0);
 
-	} while (recebidos != -1 && enviados != -1);
+	} while (recebidos != -1 && enviados != -1); //enquanto ha conexao, continuar o jogo
 
-	printf("Saindo da sala...");
+	printf("Saindo da sala..."); //sai da sala quando disconecta
 	close(client_socket);
 	printf("Voce saiu da sala.\n");
 	return 0;

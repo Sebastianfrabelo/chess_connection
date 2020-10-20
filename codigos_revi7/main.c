@@ -14,13 +14,13 @@ int main()
 	int flag = 0;
 	int turno = 0; //var pra saber quem esta jogando
 	int move = 1;
+	char hash[4];
 
 	
-
 	while (1)
 	{
 		printf("\n -- Chess Connect -- \n");
-		printf("Bem vindo, escolha uma acao:\n1) Host Game\n2) Join Game\n0) Exit\n\n>>");
+		printf("Bem vindo, escolha uma acao:\n1) Host Game (as Player 1)\n2) Join Game (as Player 0)\n0) Exit\n\n>>");
 		fflush(stdin);
 		scanf("%d", &menu_select);
 		switch (menu_select)
@@ -32,10 +32,12 @@ int main()
 			break;
 
 		case 1:
-			printf("Indique o numero da sala a ser criada (0 to 100): ");
+			printf("Indique o numero da sala a ser criada (AAA to ZZZ): ");
 			fflush(stdin);
-			scanf("%d", &port_select);
-			if (port_select < 0 || port_select > 100)
+			scanf("%s", hash);
+			hash[3] = '\0';
+			port_select = hash[0] + (3 * hash[1]) + (7 * hash[2]) % 1000;
+			if (port_select < 0 || port_select > 1001)
 			{
 				printf("Nro. Invalido\n");
 				break;
@@ -44,10 +46,12 @@ int main()
 			break;
 
 		case 2:
-			printf("Indique a sala que quer entrar (0 to 100): ");
+			printf("Indique a sala que quer entrar (AAA to ZZZ): ");
 			fflush(stdin);
-			scanf("%d", &port_select);
-			if (port_select < 0 || port_select > 100)
+			scanf("%s", hash);
+			hash[3] = '\0';
+			port_select = hash[0] + (3 * hash[1]) + (7 * hash[2]) % 1001;
+			if (port_select < 0 || port_select > 1001)
 			{
 				printf("Nro. Invalido ou sala cheia!\n");
 				break;
