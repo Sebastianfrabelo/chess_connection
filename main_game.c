@@ -34,7 +34,7 @@ Entradas:
     int *pmove: Contem o endereco do valor de quantas rodadas se passaram ate agora.
     int nroJogador: Numero do jogador.
 Saida:
-    char *hexvalue: array de valores em ascii.
+    0 para movimentos invalidos, 1 para movimentos validos e 2 para o final de jogo
 */
 int main_game(char comando[6], peca tab[][8], int *pturno, int *pmove, int nroJogador)
 {
