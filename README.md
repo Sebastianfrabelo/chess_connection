@@ -6,4 +6,5 @@ Integrantes do grupo:
  - Vitor Oliveira Caires - Nusp: 10748027
  
  Código testado em: MacOS versão 10.15.7 Catalina
+ 
  Compilador utilizado: GCC 10.2
