@@ -8,3 +8,11 @@ Integrantes do grupo:
  Código testado em: MacOS versão 10.15.7 Catalina
  
  Compilador utilizado: GCC 10.2
+
+#Como rodar o programa:
+1) No terminal, digitar "make" ou "make run"
+
+ou 
+
+
+2) No github, tem um arquivo chamado "main" , que é o programa compilado 
