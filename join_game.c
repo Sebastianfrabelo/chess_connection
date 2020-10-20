@@ -102,17 +102,15 @@ int join_game(int port, int *pturno, int *pmove, char pecas[])
 			recebidos = -1;
 			return 0;
 		}
+		
 		result = main_game(resposta, tab, pturno, pmove, 0);
 		printf("Jogada do adversario: %s\n", resposta);
-		if (result == 2) //fim de jogo?
-			break;
 		showGame(tab, 0);
 
-	} while (recebidos != -1 && enviados != -1); //enquanto ha conexao, continuar o jogo
+		if (result == 2) //fim de jogo?
+			break;
 
-	printf("Saindo da sala..."); //sai da sala quando disconecta
-	close(client_socket);
-	printf("Voce saiu da sala.\n");
+	} while (recebidos != -1 && enviados != -1); //enquanto ha conexao, continuar o jogo
 	return 0;
 }
 

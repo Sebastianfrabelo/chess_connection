@@ -58,19 +58,11 @@ int host_game(int port, int *pturno, int *pmove, char pecas[])
 		update_danger(tab, tab_danger); //atualiza o tabuleiro de ataques
 		showGame(tab, 1); //print na tela
 
-		conectado(client_socket, pturno, pmove);
-		printf("Continuar na sala? S/N: ");
-		fflush(stdin);
-		scanf("%c", &continua);
-		if (continua == 'S' || continua == 's')
-		{
-			printf("Esperando novo jogador...\n");
-		}
-		else
-		{
-			client_socket = 0;
-			printf("Sala excluida!\n");
-			return 0;
+		conectado(client_socket, pturno, pmove);//o jogo rola aqui
+		
+		client_socket = 0;
+		printf("Sala excluida!\n");
+		return 0;
 		}
 	}
 	return 0;
@@ -102,13 +94,19 @@ int conectado(int client_socket, int *pturno, int *pmove)
 			close(client_socket);
 			printf("Conexao encerrada.\n");
 			recebidos = -1;
-			break;
+			return 0;
 		}
 		if(recebidos != -1){
 			result = main_game(resposta, tab, pturno, pmove, 0); //faz o movimento
 			printf("Jogada do adversario: %s\n", resposta);
-			if (result == 2) //fim de jogo?
-				break;
+			if (result == 2){ //fim de jogo?
+				showGame(tab, 1);
+				printf("Terminando conexao....\n"); //caso exit game
+				close(client_socket);
+				printf("Conexao encerrada.\n");
+				recebidos = -1;
+				return 0;
+			}
 		}
 		result = 0;
 		showGame(tab, 1);
@@ -126,14 +124,15 @@ int conectado(int client_socket, int *pturno, int *pmove)
 				close(client_socket);
 				printf("Conexao encerrada.\n");
 				recebidos = -1;
-				break;
+				return 0;
 			}
 			result = main_game(mensagem, tab, pturno, pmove, 1); //faz o movimento
 			if (result == 2)												 //fim de jogo
 			{//fim de jogo
 				enviados = send(client_socket, mensagem, strlen(mensagem), 0);
+				close(client_socket);
 				recebidos = -1;
-				break;
+				return 0;
 			}
 			if (result) //jogada valida
 			{
@@ -141,16 +140,11 @@ int conectado(int client_socket, int *pturno, int *pmove)
 			}
 				printf("Comando incorreto, tente novamente...\n");
 		}
-		if(recebidos != -1)
 			enviados = send(client_socket, mensagem, strlen(mensagem), 0);
 		if (result == 2) //fim de jogo?
 			break;
 		showGame(tab, 1);
 
 	} while (recebidos != -1 && enviados != -1); //continua o jogo
-
-	printf("Saindo da sala...\n"); //fim de jogo ou desconexao
-	close(client_socket);
-	printf("Conexao encerrada.\n");
 	return 0;
 }
