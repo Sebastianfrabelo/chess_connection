@@ -1,1 +1,2 @@
-# chess_conection
+# CUIDADO, FINALMENTE FUNCIONA!!!
+eu acho...
