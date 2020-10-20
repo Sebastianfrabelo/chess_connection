@@ -1,2 +1,2 @@
 Integrantes do grupo:
- - Vitor Rodrigues leonardi - Nusp: 10716567
+ - Vitor Rodrigues Leonardi - Nusp: 10716567
