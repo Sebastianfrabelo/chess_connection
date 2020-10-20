@@ -16,7 +16,7 @@ Entrada:
     int *pmove: Quantas rodadas se passaram ate agora?
     char pecas[]: Array de pecas provindas da main.
 Saida:
-	Sempre 0.
+	Sempre 0. Retorna 1 caso aconteca um erro.
 */
 int join_game(int port, int *pturno, int *pmove, char pecas[])
 {
